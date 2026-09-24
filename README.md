@@ -5,7 +5,8 @@
 Answer three questions and get a whole week's menu with recipes and a ready
 shopping list, tailored to ten diets (diabetes, sports, vegetarian and more).
 
-**[▶ Live demo](https://brutall100.github.io/weekmenu-ai-meal-planner/)** ·
+**[▶ Live demo](https://brutall100.github.io/weekmenu-ai-meal-planner/)** (in the browser) ·
+**[Full app with AI](https://weekmenu.brutall100.deno.net)** (Deno Deploy) ·
 **[Source code](https://github.com/brutall100/weekmenu-ai-meal-planner)**
 
 ![WeekMenu – light theme](docs/screenshot.webp)
@@ -51,7 +52,7 @@ The interface is in Lithuanian.
 
 | | GitHub Pages demo | Full app |
 |---|---|---|
-| Where | `docs/` – static files | Deno + Fresh server |
+| Where | `docs/` – static files | Deno + Fresh server, live at [weekmenu.brutall100.deno.net](https://weekmenu.brutall100.deno.net) |
 | Data | 14 sample meals, saved in your browser (`localStorage`) | Deno KV database |
 | AI | – | Claude generates missing recipes |
 | Streaks, stories, stats | – | ✓ |
