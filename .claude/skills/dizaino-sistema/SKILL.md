@@ -13,23 +13,48 @@ niekada nerašom `#d96a3f` ar `bg-orange-500`** – rašom `bg-brand`.
 Priežastis paprasta: kai spalva pakartota 40 vietų, jos pakeisti nebeįmanoma.
 Kai ji viena – visos svetainės nuotaiką pakeiti trimis eilutėmis.
 
+### Kryptis – „Spalvota lėkštė“
+
+Drąsu ir žaisminga: sultingos daržovių riekelės ant mėlynos lėkštės. Fone lėtai
+kyla pomidorų, agurkų ir citrinų riekelės (`static/fonas.js`), pradžios
+puslapyje sukasi „savaitės lėkštė“ (`components/WeekPlate.tsx`).
+
 ### Spalvų vardai ir kada kurią
 
-| Žetonas          | Kam                                                                                       |
-| ---------------- | ----------------------------------------------------------------------------------------- |
-| `brand`          | Pagrindinis veiksmas, akcentai. Šiltas paprikos oranžinis – maistas turi atrodyti šiltas. |
-| `brand-soft`     | Fonas po akcentu (kvietimai, pažymėti pasirinkimai)                                       |
-| `brand-strong`   | Tekstas ant šviesaus brand fono, hover būsena                                             |
-| `fresh`          | Tik „pavyko“: progresas, pažymėta, sėkmė                                                  |
-| `fresh-soft`     | Fonas po sėkmės pranešimu                                                                 |
-| `surface`        | Puslapio fonas                                                                            |
-| `surface-raised` | Kortelės, iškilę paviršiai                                                                |
-| `line`           | Rėmeliai, skirtukai                                                                       |
-| `ink`            | Pagrindinis tekstas                                                                       |
-| `ink-soft`       | Antrinis tekstas, paaiškinimai                                                            |
+| Žetonas          | Šviesus   | Kam                                                                        |
+| ---------------- | --------- | -------------------------------------------------------------------------- |
+| `brand`          | `#E4572E` | Pomidoras. Akcentai, rėmeliai, švytėjimas, riekelės. **Ne mygtuko fonas.** |
+| `brand-soft`     | `#FDE3D6` | Fonas po akcentu (kvietimai, pažymėti pasirinkimai)                        |
+| `brand-strong`   | `#B83A14` | Tekstas brand spalva (5.4:1 ant fono)                                      |
+| `action`         | `#C9461D` | Pagrindinio mygtuko fonas (baltas tekstas – 4.8:1)                         |
+| `on-action`      | `#FFFFFF` | Tekstas ant `action`. Tamsiame režime – tamsus.                            |
+| `plate`          | `#35679C` | Lėkštės mėlyna: antri mygtukai, nuorodos, fokuso žiedas                    |
+| `plate-soft`     | `#E3ECF7` | Fonas po mėlynu tekstu (etiketės)                                          |
+| `butter`         | `#F3C13A` | Tik dekoracija (lėkštė, riekelės). Niekada – tekstui.                      |
+| `fresh`          | `#2A7238` | Tik „pavyko“: progresas, pažymėta, sėkmė                                   |
+| `fresh-soft`     | `#DDF0DC` | Fonas po sėkmės pranešimu                                                  |
+| `on-fresh`       | `#FFFFFF` | Tekstas ant `fresh`                                                        |
+| `surface`        | `#FFF6E6` | Puslapio fonas                                                             |
+| `surface-raised` | `#FFFFFF` | Kortelės, iškilę paviršiai                                                 |
+| `line`           | `#EADBC2` | Rėmeliai, skirtukai                                                        |
+| `ink`            | `#1F2240` | Pagrindinis tekstas                                                        |
+| `ink-soft`       | `#545873` | Antrinis tekstas, paaiškinimai                                             |
 
-**Taisyklė:** `fresh` niekada nenaudojamas dekoracijai. Jei pamatai žalią – turi
-reikšti, kad kažkas pavyko.
+**Taisyklės:** `fresh` niekada nenaudojamas dekoracijai. `text-white` nerašom –
+rašom `text-on-action` / `text-on-fresh`, nes tamsiame režime tekstas tamsus.
+
+### Šriftai
+
+`font-display` – **Bricolage Grotesque** (antraštės), numatytasis – **DM Sans**,
+`font-mono` – **DM Mono** (skaičiai, dienų trumpiniai). Kraunami iš Google Fonts
+`_app.tsx` faile.
+
+### Efektai
+
+Klasės iš `frontend/assets/efektai.css` (bendra su Pages demo): `mygtukas`
+(pakyla + bangelė), `kyla` (kortelė pakyla), `data-atsiranda` (atsiranda
+slenkant), `data-skaicius` (skaičius suskaičiuoja), `ikona` (pasisuka užvedus
+pelę). Animuojam tik `transform` ir `opacity`.
 
 ### Tamsi tema
 
@@ -43,10 +68,11 @@ vieną – tamsioje temoje atsiras nematomas tekstas.
    vieta `frontend/components/ui.tsx`.
 2. **Mobilusis pirmas.** Rašom bazinį stilių telefonui, `sm:` ir `lg:` prideda.
    Šoninis tarpas visada 16px (`px-4`). Horizontalaus slinkimo puslapyje nebūna.
-3. **Apvalinimas:** kortelės `rounded-card`, mygtukai `rounded-full`, maži
-   elementai `rounded-lg`. Kitų variantų nėra.
-4. **Šriftai:** antraštės `font-display` (serif), tekstas – numatytasis.
-   Serifinė antraštė daro projektą panašų į receptų knygą, ne į admin skydelį.
+3. **Apvalinimas:** kortelės `rounded-card` (28px), mygtukai `rounded-full`,
+   maži elementai `rounded-lg`. Kitų variantų nėra.
+4. **Šriftai:** antraštės `font-display` (storas grotesk), tekstas –
+   numatytasis. Storas, apvalus šriftas daro projektą panašų į linksmą plakatą,
+   ne į admin skydelį.
 
 ## Prieinamumas – privaloma
 

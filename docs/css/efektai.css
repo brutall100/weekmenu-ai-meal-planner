@@ -1,0 +1,275 @@
+/*
+  EFEKTAI – gyvas fonas, mygtukai, kortelės, atsiradimas slenkant.
+
+  Šį failą naudoja DU projektai:
+    - tikra programa (importuoja frontend/assets/styles.css),
+    - GitHub Pages demo (scripts/demo.ts nukopijuoja į docs/css/).
+  Spalvų čia NĖRA – tik var(--color-*) iš paletės, todėl efektai
+  persidažo kartu su tema.
+*/
+
+/* Fokuso žiedas – matomas klaviatūra naršantiems. Niekada jo netrinam. */
+:focus-visible {
+  outline: 3px solid var(--color-plate);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* „Pereiti prie turinio“ – matoma tik gavus fokusą. */
+.praleisti {
+  position: absolute;
+  left: 1rem;
+  top: -4rem;
+  z-index: 100;
+  padding: 0.6rem 1rem;
+  border-radius: 999px;
+  background: var(--color-action);
+  color: var(--color-on-action);
+  font-weight: 600;
+  transition: top 150ms ease;
+}
+.praleisti:focus {
+  top: 0.75rem;
+}
+
+/* ---------------------------------------------------------------
+   GYVAS FONAS – daržovių riekelės ant lėkštės
+   Sluoksniai: 2 dideli neryškūs švytėjimai + kylančios, besisukančios
+   riekelės (sukuria static/fonas.js) + švelnus taškelių raštas.
+   Animuojam TIK transform ir opacity. Fonas niekada nepriima pelės.
+   --------------------------------------------------------------- */
+.gyvas-fonas {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* Taškelių raštas – kaip staltiesės audinys. */
+.gyvas-fonas::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(
+    var(--color-line) 1px,
+    transparent 1.5px
+  );
+  background-size: 26px 26px;
+  opacity: 0.55;
+}
+
+.svytejimas {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px);
+  opacity: var(--fonas-svytejimas);
+  will-change: transform;
+}
+.svytejimas-1 {
+  width: 46vmax;
+  height: 46vmax;
+  left: -14vmax;
+  bottom: -18vmax;
+  background: var(--color-brand);
+  animation: plaukia-1 26s ease-in-out infinite alternate;
+}
+.svytejimas-2 {
+  width: 40vmax;
+  height: 40vmax;
+  right: -12vmax;
+  top: -14vmax;
+  background: var(--color-plate);
+  animation: plaukia-2 32s ease-in-out infinite alternate;
+}
+@keyframes plaukia-1 {
+  to {
+    transform: translate(8vmax, -6vmax) scale(1.08);
+  }
+}
+@keyframes plaukia-2 {
+  to {
+    transform: translate(-7vmax, 5vmax) scale(0.94);
+  }
+}
+
+/* Paralakso sluoksnis – static/fonas.js jį pastumia judinant pelę. */
+.fonas-sluoksnis {
+  position: absolute;
+  inset: 0;
+  transition: transform 600ms ease-out;
+}
+
+.riekele {
+  position: absolute;
+  bottom: -80px;
+  left: var(--x);
+  width: var(--dydis);
+  height: var(--dydis);
+  opacity: 0;
+  animation: kyla var(--trukme) linear var(--velavimas) infinite;
+  will-change: transform, opacity;
+}
+.riekele svg {
+  width: 100%;
+  height: 100%;
+  animation: sukasi var(--sukimasis) linear infinite;
+}
+@keyframes kyla {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+  10% {
+    opacity: var(--fonas-riekeles);
+  }
+  85% {
+    opacity: var(--fonas-riekeles);
+  }
+  100% {
+    transform: translate(var(--nuokrypis), -115vh);
+    opacity: 0;
+  }
+}
+@keyframes sukasi {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Riekelių spalvos – iš paletės, todėl keičiasi kartu su tema. */
+.riekele-pomidoras .zieve {
+  fill: var(--color-brand);
+}
+.riekele-pomidoras .vidus {
+  fill: var(--color-brand-soft);
+}
+.riekele-agurkas .zieve {
+  fill: var(--color-fresh);
+}
+.riekele-agurkas .vidus {
+  fill: var(--color-fresh-soft);
+}
+.riekele-citrina .zieve {
+  fill: var(--color-butter);
+}
+.riekele-citrina .vidus {
+  fill: var(--color-surface-raised);
+}
+.riekele .linijos {
+  stroke: currentColor;
+  opacity: 0.35;
+}
+
+/* ---------------------------------------------------------------
+   MYGTUKAI – pakyla, nusileidžia, turi šešėlį ir bangelę.
+   Ikona pasisuka kaip lėkštė ant stalo.
+   --------------------------------------------------------------- */
+.mygtukas {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    background-color 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease;
+}
+.mygtukas:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: var(--seselis);
+}
+.mygtukas:active:not(:disabled) {
+  transform: translateY(1px);
+  box-shadow: none;
+}
+.mygtukas .ikona {
+  display: inline-block;
+  transition: transform 400ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.mygtukas:hover .ikona {
+  transform: rotate(-25deg) scale(1.15);
+}
+.bangele {
+  position: absolute;
+  z-index: -1;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.25;
+  transform: scale(0);
+  animation: bangele 550ms ease-out forwards;
+  pointer-events: none;
+}
+@keyframes bangele {
+  to {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+/* Kortelės švelniai pakyla užvedus pelę. */
+.kyla {
+  transition:
+    transform 220ms ease,
+    box-shadow 220ms ease,
+    border-color 220ms ease;
+}
+.kyla:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--seselis);
+}
+
+/* Atsiradimas slenkant. Slepiam TIK kai veikia JS (klasė .js),
+   kitaip be JS turinys liktų nematomas. */
+.js [data-atsiranda] {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 500ms ease,
+    transform 500ms ease;
+}
+.js [data-atsiranda].matomas {
+  opacity: 1;
+  transform: none;
+}
+
+/* Savaitės lėkštė pradžios puslapyje lėtai sukasi. */
+.lekste-sukasi {
+  animation: sukasi 90s linear infinite;
+  transform-origin: 50% 50%;
+}
+
+/* Temos mygtukas: rodom tą ikoną, į kurią persijungsim. */
+.temos-mygtukas .saule {
+  display: none;
+}
+:root[data-theme="dark"] .temos-mygtukas .saule {
+  display: inline;
+}
+:root[data-theme="dark"] .temos-mygtukas .menulis {
+  display: none;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .temos-mygtukas .saule {
+    display: inline;
+  }
+  :root:not([data-theme="light"]) .temos-mygtukas .menulis {
+    display: none;
+  }
+}
+
+/* „Mažiau judesio“: riekelės dingsta, lieka statiškas švytėjimas. */
+@media (prefers-reduced-motion: reduce) {
+  .riekele {
+    display: none;
+  }
+  .svytejimas,
+  .lekste-sukasi {
+    animation: none !important;
+  }
+  .js [data-atsiranda] {
+    opacity: 1;
+    transform: none;
+  }
+}

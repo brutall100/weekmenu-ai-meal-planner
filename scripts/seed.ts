@@ -11,8 +11,7 @@ const result = await seed({ force });
 console.log("Sėkla baigta:");
 console.log(`  kategorijos: +${result.categories}`);
 console.log(`  patiekalai:  +${result.meals}`);
-console.log(`  istorijos:   +${result.stories}`);
-if (result.categories + result.meals + result.stories === 0) {
+if (result.categories + result.meals === 0) {
   console.log(
     "  (viskas jau buvo vietoje – paleisk su --force, jei nori perrašyti)",
   );

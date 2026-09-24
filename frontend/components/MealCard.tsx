@@ -13,7 +13,8 @@ export function MealCard(
   return (
     <a
       href={`/patiekalai/${meal.id}`}
-      class="group block rounded-card border border-line bg-surface-raised p-4 transition-colors hover:border-brand"
+      data-atsiranda
+      class="kyla group block rounded-card border border-line bg-surface-raised p-4 hover:border-brand"
     >
       <h3 class="font-display text-lg font-semibold leading-snug text-ink group-hover:text-brand-strong">
         {meal.name}

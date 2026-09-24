@@ -5,7 +5,7 @@ vendor/
 *.kv
 *.kv-shm
 *.kv-wal
-data/
+/data/
 
 # Aplinkos kintamieji (SLAPTI – niekada necommitinam)
 .env
@@ -17,6 +17,3 @@ data/
 Thumbs.db
 .idea/
 *.swp
-
-# Legacy npm
-legacy/**/node_modules/

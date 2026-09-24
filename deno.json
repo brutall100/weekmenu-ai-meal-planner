@@ -7,18 +7,26 @@
     "start": "deno serve -A --unstable-kv _fresh/server.js",
     "seed": "deno run -A --unstable-kv scripts/seed.ts",
     "generate": "deno run -A --unstable-kv scripts/generate.ts",
+    "demo": "deno run -A --unstable-kv scripts/demo.ts",
     "test": "deno test -A --unstable-kv tests/",
     "check": "deno fmt --check . && deno lint . && deno check frontend backend shared scripts tests",
     "fix": "deno fmt . && deno lint --fix ."
   },
   "lint": {
     "rules": { "tags": ["fresh", "recommended"] },
-    "exclude": ["legacy/", "_fresh/", "docs/"]
+    "exclude": ["_fresh/", "docs/"]
   },
   "fmt": {
-    "exclude": ["legacy/", "_fresh/", "deno.lock", "**/*.md"]
+    "exclude": [
+      "_fresh/",
+      "deno.lock",
+      "**/*.md",
+      "docs/js/",
+      "docs/css/efektai.css",
+      "docs/data/"
+    ]
   },
-  "exclude": ["**/_fresh/*", "legacy/"],
+  "exclude": ["**/_fresh/*"],
   "imports": {
     "@/": "./",
     "@backend/": "./backend/",

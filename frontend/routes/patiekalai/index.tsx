@@ -29,7 +29,9 @@ export default define.page(async function MealsPage(ctx) {
         <h1 class="font-display text-3xl font-bold text-ink">
           Visi patiekalai
         </h1>
-        <p class="mt-1 text-ink-soft">{shown.length} iš {meals.length}</p>
+        <p class="mt-1 text-ink-soft">
+          Rodoma: {shown.length} / {meals.length}
+        </p>
       </header>
 
       <div class="mb-6 flex flex-wrap gap-2">

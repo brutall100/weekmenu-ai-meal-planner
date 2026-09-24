@@ -25,6 +25,18 @@ function StreakChip({ engagement }: { engagement: Engagement }) {
   );
 }
 
+/** Logotipas – maža lėkštė su pomidoro riekele (tas pats motyvas kaip favicon). */
+function LogoMark() {
+  return (
+    <svg viewBox="0 0 32 32" class="h-8 w-8 shrink-0" aria-hidden="true">
+      <circle cx="16" cy="16" r="15" class="fill-plate" />
+      <circle cx="16" cy="16" r="11.5" class="fill-surface" />
+      <circle cx="16" cy="16" r="8" class="fill-brand" />
+      <circle cx="16" cy="16" r="5.6" class="fill-brand-soft" />
+    </svg>
+  );
+}
+
 export function Layout(
   { children, engagement, active }: {
     children: ComponentChildren;
@@ -32,43 +44,67 @@ export function Layout(
     active?: string;
   },
 ) {
+  const linkClass = (href: string) =>
+    `shrink-0 rounded-full px-3 py-1.5 text-sm transition-colors ${
+      active === href
+        ? "bg-brand-soft font-semibold text-brand-strong"
+        : "text-ink-soft hover:text-ink"
+    }`;
+
   return (
     <div class="flex min-h-screen flex-col">
-      <header class="sticky top-0 z-20 border-b border-line bg-surface/90 backdrop-blur">
+      <a href="#turinys" class="praleisti">Pereiti prie turinio</a>
+
+      <header class="sticky top-0 z-20 border-b border-line bg-surface/85 backdrop-blur-md">
         <div class="mx-auto flex max-w-5xl items-center gap-3 px-4 py-3">
-          <a href="/" class="font-display text-lg font-bold text-ink shrink-0">
-            <span class="text-brand">Savaitės</span> planas
+          <a
+            href="/"
+            class="flex shrink-0 items-center gap-2 font-display text-xl font-extrabold tracking-tight text-ink"
+          >
+            <LogoMark />
+            <span>
+              Week<span class="text-brand-strong">Menu</span>
+            </span>
           </a>
-          <nav class="ml-auto hidden items-center gap-1 sm:flex">
+          <nav
+            class="ml-auto hidden items-center gap-1 md:flex"
+            aria-label="Pagrindinė navigacija"
+          >
             {NAV.map((item) => (
               <a
                 key={item.href}
                 href={item.href}
-                class={`rounded-full px-3 py-1.5 text-sm transition-colors ${
-                  active === item.href
-                    ? "bg-brand-soft font-semibold text-brand-strong"
-                    : "text-ink-soft hover:text-ink"
-                }`}
+                class={linkClass(item.href)}
+                aria-current={active === item.href ? "page" : undefined}
               >
                 {item.label}
               </a>
             ))}
           </nav>
-          <div class="ml-auto sm:ml-0">
+          <div class="ml-auto flex items-center gap-2 md:ml-0">
             <StreakChip engagement={engagement} />
+            <button
+              type="button"
+              data-temos-mygtukas
+              class="mygtukas temos-mygtukas inline-flex h-9 w-9 items-center justify-center rounded-full border border-line bg-surface-raised text-ink"
+              aria-label="Perjungti temą"
+            >
+              <span class="menulis" aria-hidden="true">☾</span>
+              <span class="saule" aria-hidden="true">☀</span>
+            </button>
           </div>
         </div>
-        {/* Mobiliajame navigacija atskiroje juostoje, kad tilptų. */}
-        <nav class="flex gap-1 overflow-x-auto border-t border-line px-4 py-2 sm:hidden">
+        {/* Mažame ekrane navigacija atskiroje juostoje, kad tilptų. */}
+        <nav
+          class="flex gap-1 overflow-x-auto border-t border-line px-4 py-2 md:hidden"
+          aria-label="Pagrindinė navigacija"
+        >
           {NAV.map((item) => (
             <a
               key={item.href}
               href={item.href}
-              class={`shrink-0 rounded-full px-3 py-1.5 text-sm ${
-                active === item.href
-                  ? "bg-brand-soft font-semibold text-brand-strong"
-                  : "text-ink-soft"
-              }`}
+              class={linkClass(item.href)}
+              aria-current={active === item.href ? "page" : undefined}
             >
               {item.label}
             </a>
@@ -76,17 +112,22 @@ export function Layout(
         </nav>
       </header>
 
-      <main class="mx-auto w-full max-w-5xl flex-1 px-4 py-8">{children}</main>
+      <main
+        id="turinys"
+        tabIndex={-1}
+        class="mx-auto w-full max-w-5xl flex-1 px-4 py-8 outline-none"
+      >
+        {children}
+      </main>
 
-      <footer class="border-t border-line">
+      <footer class="border-t border-line bg-surface/85 backdrop-blur-md">
         <div class="mx-auto max-w-5xl px-4 py-6 text-sm text-ink-soft">
           <p>
-            Savaitės planas · mokyklinis projektas, statomas kaip tikras
-            produktas.
+            WeekMenu · mokyklinis projektas, statomas kaip tikras produktas.
           </p>
           <p class="mt-1">
             Patiekalus generuoja Claude. Tai nėra medicininė konsultacija –
-            esant ligai pasitark su gydytoju ar dietologu.
+            sergant pasitark su gydytoju ar dietologu.
           </p>
         </div>
       </footer>

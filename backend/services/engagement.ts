@@ -1,5 +1,6 @@
 import { daysBetween, isoDate } from "../lib/dates.ts";
 import type { Engagement, WeekPlan } from "@shared/types.ts";
+import { plural, WORDS } from "@shared/plural.ts";
 
 /**
  * ĮPROČIO VARIKLIS.
@@ -209,9 +210,10 @@ export function buildNudge(
   if (progress.total > 0 && progress.remaining === 0) {
     return {
       tone: "sveikinimas",
-      title: "Visa savaitė pagaminta 🎉",
-      body:
-        `Iš viso jau ${opts.engagement.totalCooked} patiekalai. Kitą savaitę galim pabandyti ką nors naujo.`,
+      title: "Visi savaitės patiekalai pagaminti 🎉",
+      body: `Iš viso jau ${
+        plural(opts.engagement.totalCooked, WORDS.patiekalas)
+      }. Kitą savaitę galim pabandyti ką nors naujo.`,
       cta: "Naujas planas kitai savaitei",
       href: "/pradzia",
     };
@@ -221,7 +223,7 @@ export function buildNudge(
   if (streak >= 2 && opts.engagement.lastActiveDate !== today) {
     return {
       tone: "priminimas",
-      title: `${streak} dienos iš eilės`,
+      title: `${plural(streak, WORDS.diena)} iš eilės`,
       body:
         "Šiandienos patiekalas jau parinktas – belieka pažymėti, kai pagaminsi.",
       cta: "Žiūrėti šiandienos patiekalą",
@@ -234,8 +236,9 @@ export function buildNudge(
     return {
       tone: "padrasinimas",
       title: "Sveikas sugrįžęs",
-      body:
-        `Anksčiau esi pagaminęs ${opts.engagement.totalCooked} patiekalus. Pradėti iš naujo užtrunka vieną vakarą.`,
+      body: `Anksčiau esi pagaminęs ${
+        plural(opts.engagement.totalCooked, WORDS.patiekalasGal)
+      }. Pradėti iš naujo užtrunka vieną vakarą.`,
       cta: "Tęsti planą",
       href: "/planas",
     };
@@ -244,10 +247,13 @@ export function buildNudge(
   // 5. Įprasta darbo diena – rodom, kiek liko, ne kiek padaryta.
   return {
     tone: "priminimas",
-    title: progress.remaining === 1
-      ? "Liko vienas patiekalas"
-      : `Liko ${progress.remaining} patiekalai`,
-    body: "Savaitė beveik surinkta. Kiekvienas pažymėjimas ilgina tavo seriją.",
+    title: `Liko ${plural(progress.remaining, WORDS.patiekalas)}`,
+    // „Beveik“ sakom tik tada, kai tai tiesa – ne ką tik sudarytam planui.
+    body: progress.done === 0
+      ? "Planas paruoštas. Pradėk nuo šiandienos patiekalo – vieno užtenka."
+      : progress.remaining <= 3
+      ? "Savaitė beveik baigta. Kiekviena diena, kai ką nors pagamini, ilgina tavo seriją."
+      : "Kiekviena diena, kai ką nors pagamini, ilgina tavo seriją.",
     cta: "Atidaryti planą",
     href: "/planas",
   };

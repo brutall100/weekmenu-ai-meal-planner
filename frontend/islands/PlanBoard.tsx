@@ -1,6 +1,7 @@
 import { useSignal } from "@preact/signals";
 import { WEEKDAYS } from "@shared/types.ts";
 import type { Meal, MealSlot, PlanEntry } from "@shared/types.ts";
+import { plural, WORDS } from "@shared/plural.ts";
 
 interface Props {
   entries: PlanEntry[];
@@ -83,7 +84,9 @@ export default function PlanBoard(
         const left = data.progress.remaining;
         showToast({
           emoji: "✅",
-          text: left === 0 ? "Visa savaitė pagaminta!" : `Puiku. Liko ${left}.`,
+          text: left === 0
+            ? "Visi savaitės patiekalai pagaminti!"
+            : `Puiku. Liko ${plural(left, WORDS.patiekalas)}.`,
         });
       }
     } catch (e) {
@@ -127,12 +130,14 @@ export default function PlanBoard(
   return (
     <div>
       {/* Progresas visada viršuje – tai pagrindinis „kiek liko“ signalas. */}
-      <div class="sticky top-[57px] z-10 -mx-4 mb-6 border-b border-line bg-surface/95 px-4 py-3 backdrop-blur sm:top-[61px]">
+      <div class="-mx-4 mb-6 border-b border-line bg-surface/95 px-4 py-3 backdrop-blur md:sticky md:top-[61px] md:z-10">
         <div class="flex items-baseline justify-between text-sm">
           <span class="font-semibold text-ink">
             {total - done === 0
-              ? "Visa savaitė pagaminta 🎉"
-              : `Liko ${total - done} iš ${total}`}
+              ? "Visi savaitės patiekalai pagaminti 🎉"
+              : `Liko ${total - done} iš ${
+                plural(total, WORDS.patiekalasKilm)
+              }`}
           </span>
           <span class="flex items-center gap-3 text-ink-soft">
             {streak.value !== null && streak.value > 0 && (
@@ -180,7 +185,7 @@ export default function PlanBoard(
                   {WEEKDAYS[day]}
                 </span>
                 {isToday && (
-                  <span class="rounded-full bg-brand px-2 py-0.5 text-xs font-semibold text-white">
+                  <span class="rounded-full bg-action px-2 py-0.5 text-xs font-semibold text-on-action">
                     šiandien
                   </span>
                 )}
@@ -234,10 +239,10 @@ export default function PlanBoard(
                             type="button"
                             onClick={() => toggle(entry)}
                             disabled={isBusy}
-                            class={`rounded-full px-4 py-2 text-sm font-semibold transition-colors disabled:opacity-50 ${
+                            class={`mygtukas rounded-full px-4 py-2 text-sm font-semibold disabled:opacity-50 ${
                               entry.done
-                                ? "bg-fresh text-white"
-                                : "bg-brand text-white hover:bg-brand-strong"
+                                ? "bg-fresh text-on-fresh"
+                                : "bg-action text-on-action"
                             }`}
                           >
                             {entry.done ? "✓ Pagaminta" : "Pagaminau"}
@@ -246,7 +251,7 @@ export default function PlanBoard(
                             type="button"
                             onClick={() => swap(entry)}
                             disabled={isBusy}
-                            class="rounded-full border border-line px-4 py-2 text-sm text-ink-soft transition-colors hover:border-brand hover:text-ink disabled:opacity-50"
+                            class="mygtukas rounded-full border border-line px-4 py-2 text-sm text-ink-soft hover:border-brand hover:text-ink disabled:opacity-50"
                           >
                             Kitas patiekalas
                           </button>
