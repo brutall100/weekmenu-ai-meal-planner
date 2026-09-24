@@ -8,8 +8,9 @@ import type { ComponentChildren, JSX } from "preact";
 type ButtonVariant = "primary" | "secondary" | "ghost";
 
 const BUTTON_STYLES: Record<ButtonVariant, string> = {
-  primary: "bg-brand text-white hover:bg-brand-strong shadow-sm",
-  secondary: "bg-surface-raised text-ink border border-line hover:border-brand",
+  primary: "bg-action text-on-action shadow-sm",
+  secondary:
+    "bg-surface-raised text-ink border-2 border-plate/40 hover:border-plate",
   ghost: "text-ink-soft hover:text-ink hover:bg-brand-soft",
 };
 
@@ -21,7 +22,7 @@ export function Button(
   return (
     <button
       {...props}
-      class={`inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
+      class={`mygtukas inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed ${
         BUTTON_STYLES[variant]
       } ${extra}`}
     />
@@ -36,7 +37,7 @@ export function LinkButton(
   return (
     <a
       {...props}
-      class={`inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition-colors ${
+      class={`mygtukas inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold ${
         BUTTON_STYLES[variant]
       } ${extra}`}
     />
@@ -44,14 +45,19 @@ export function LinkButton(
 }
 
 export function Card(
-  { children, class: extra = "" }: {
+  { children, class: extra = "", lift = false }: {
     children: ComponentChildren;
     class?: string;
+    /** Ar kortelė pakyla užvedus pelę – tik paspaudžiamoms ar pristatančioms. */
+    lift?: boolean;
   },
 ) {
   return (
     <div
-      class={`rounded-card border border-line bg-surface-raised p-5 ${extra}`}
+      data-atsiranda
+      class={`rounded-card border border-line bg-surface-raised p-5 ${
+        lift ? "kyla" : ""
+      } ${extra}`}
     >
       {children}
     </div>
@@ -61,13 +67,14 @@ export function Card(
 export function Chip(
   { children, tone = "neutral" }: {
     children: ComponentChildren;
-    tone?: "neutral" | "brand" | "fresh";
+    tone?: "neutral" | "brand" | "fresh" | "plate";
   },
 ) {
   const tones = {
     neutral: "bg-surface text-ink-soft border-line",
     brand: "bg-brand-soft text-brand-strong border-transparent",
     fresh: "bg-fresh-soft text-fresh border-transparent",
+    plate: "bg-plate-soft text-plate border-transparent",
   };
   return (
     <span
@@ -80,6 +87,11 @@ export function Chip(
   );
 }
 
+/** Ikona mygtuke – užvedus pelę pasisuka kaip lėkštė. */
+export function Icon({ children }: { children: ComponentChildren }) {
+  return <span class="ikona" aria-hidden="true">{children}</span>;
+}
+
 /** Tuščio sąrašo būsena. Niekada nerodom tuščio ekrano be paaiškinimo. */
 export function EmptyState(
   { emoji, title, body, action }: {
@@ -90,7 +102,7 @@ export function EmptyState(
   },
 ) {
   return (
-    <div class="rounded-card border border-dashed border-line px-6 py-12 text-center">
+    <div class="rounded-card border-2 border-dashed border-line bg-surface-raised px-6 py-12 text-center">
       <div class="text-4xl">{emoji}</div>
       <h3 class="mt-3 text-lg font-semibold text-ink">{title}</h3>
       <p class="mx-auto mt-1 max-w-sm text-sm text-ink-soft">{body}</p>

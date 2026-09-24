@@ -1,5 +1,6 @@
 import { useSignal } from "@preact/signals";
 import { Button } from "../components/ui.tsx";
+import { plural, WORDS } from "@shared/plural.ts";
 
 /**
  * „Sugeneruok daugiau“ mygtukas.
@@ -36,7 +37,9 @@ export default function GenerateMealsButton(
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
-      message.value = `Sugeneruota ${data.meals.length}. Atnaujinam puslapį…`;
+      message.value = `Sugeneruota: ${
+        plural(data.meals.length, WORDS.patiekalas)
+      }. Atnaujinam puslapį…`;
       setTimeout(() => globalThis.location.reload(), 900);
     } catch (e) {
       isError.value = true;

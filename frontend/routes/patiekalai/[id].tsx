@@ -4,6 +4,7 @@ import { Layout } from "../../components/Layout.tsx";
 import { Card, Chip } from "../../components/ui.tsx";
 import { getMeal } from "@backend/db/repositories/meals.ts";
 import { getCategory } from "@backend/db/repositories/categories.ts";
+import { formatQuantity } from "@shared/units.ts";
 
 const DIFFICULTY = {
   1: "Lengva",
@@ -52,7 +53,10 @@ export default define.page(async function MealPage(ctx) {
                 >
                   <span class="text-ink">{ing.name}</span>
                   <span class="shrink-0 text-ink-soft">
-                    {Math.round(ing.amount * household * 10) / 10} {ing.unit}
+                    {formatQuantity(
+                      Math.round(ing.amount * household * 10) / 10,
+                      ing.unit,
+                    )}
                   </span>
                 </li>
               ))}
@@ -87,7 +91,7 @@ export default define.page(async function MealPage(ctx) {
           <ol class="mt-4 space-y-4">
             {meal.steps.map((step, i) => (
               <li key={i} class="flex gap-3">
-                <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-brand text-sm font-bold text-white">
+                <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-action text-sm font-bold text-on-action">
                   {i + 1}
                 </span>
                 <span class="pt-0.5 text-ink">{step}</span>

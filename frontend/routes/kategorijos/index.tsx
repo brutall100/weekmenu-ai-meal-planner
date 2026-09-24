@@ -3,6 +3,7 @@ import { Layout } from "../../components/Layout.tsx";
 import { Card } from "../../components/ui.tsx";
 import { listCategories } from "@backend/db/repositories/categories.ts";
 import { countMealsByCategory } from "@backend/db/repositories/meals.ts";
+import { plural, WORDS } from "@shared/plural.ts";
 
 export default define.page(async function CategoriesPage(ctx) {
   const categories = await listCategories();
@@ -26,7 +27,7 @@ export default define.page(async function CategoriesPage(ctx) {
             href={`/kategorijos/${category.slug}`}
             class="block"
           >
-            <Card class="h-full transition-colors hover:border-brand">
+            <Card lift class="h-full hover:border-brand">
               <div class="flex items-start gap-3">
                 <span class="text-3xl">{category.emoji}</span>
                 <div>
@@ -35,7 +36,7 @@ export default define.page(async function CategoriesPage(ctx) {
                   </h2>
                   <p class="mt-1 text-sm text-ink-soft">{category.summary}</p>
                   <p class="mt-3 text-xs font-medium text-brand-strong">
-                    {counts[i]} {counts[i] === 1 ? "patiekalas" : "patiekalai"}
+                    {plural(counts[i], WORDS.patiekalas)}
                   </p>
                 </div>
               </div>

@@ -1,4 +1,5 @@
 import { GROCERY_AISLES } from "@shared/types.ts";
+import { normalizeUnit } from "@shared/units.ts";
 import type {
   GroceryAisle,
   Ingredient,
@@ -64,8 +65,8 @@ function add(
   ing: Ingredient,
   household: number,
 ): void {
-  const key =
-    `${ing.name.toLowerCase().trim()}|${ing.unit.toLowerCase().trim()}`;
+  const unit = normalizeUnit(ing.unit);
+  const key = `${ing.name.toLowerCase().trim()}|${unit}`;
   const existing = totals.get(key);
   const amount = round(ing.amount * household);
   if (existing) {
@@ -74,7 +75,7 @@ function add(
     totals.set(key, {
       name: ing.name,
       amount,
-      unit: ing.unit,
+      unit,
       aisle: ing.aisle,
     });
   }

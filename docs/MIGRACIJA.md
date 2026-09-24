@@ -8,8 +8,9 @@
 | `WeekMenuBack` | Vienas `server.js` failas, 460 eilučių, Express + MongoDB |
 | `WeekMen-uBack` | Tuščias (tik `.git`) |
 
-Senasis kodas **neištrintas** – guli `legacy/` aplanke. Jis neįtrauktas
-į lint, formatavimą ir tipų tikrinimą (`deno.json` → `exclude`).
+Senasis kodas (`legacy/` aplankas) 2026 m. rugsėjį **ištrintas** – jis
+niekur nebenaudotas. Jei prireiktų, jis tebėra git istorijoje
+(`git log -- legacy/`).
 
 ## Ką pakeitėm ir kodėl
 

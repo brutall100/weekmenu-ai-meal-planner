@@ -17,7 +17,7 @@
 
 1. Eik į [console.deno.com](https://console.deno.com) ir prisijunk per GitHub.
 2. Sukurk **organizaciją** – be jos programos sukurti nepavyks.
-3. **New App** → prijunk GitHub → pasirink `brutall100/WeekMenu`, šaka `main`.
+3. **New App** → prijunk GitHub → pasirink `brutall100/weekmenu-ai-meal-planner`, šaka `main`.
 
 Diegiam **per GitHub integraciją**, ne per `deno deploy` komandą – ji su
 Fresh 2 kol kas neranda `_fresh/server.js`
@@ -119,7 +119,6 @@ deno task start
 | „AI generavimas išjungtas“ | nėra rakto | įrašyk `ANTHROPIC_API_KEY` |
 | `Module not found file:///_fresh/server.js` | diegta per `deno deploy` CLI | diek per GitHub integraciją |
 | Windows'e `deno task check` rodo dešimtis failų | CRLF eilučių pabaigos | `.gitattributes` jau sutvarko; senam klonui – `git rm --cached -r . && git reset --hard` |
-| Build krenta dėl `legacy/` | senas kodas tikrinamas | `deno.json` → `exclude` (jau sutvarkyta) |
 
 ## Kaina
 

@@ -15,7 +15,8 @@ priimami kaip tikrame produkte.
 | `frontend/routes/` | Puslapiai ir API keliai (Fresh failų maršrutizacija) |
 | `frontend/islands/` | Interaktyvūs komponentai (veikia naršyklėje) |
 | `frontend/components/` | Serveryje renderinami komponentai |
-| `legacy/` | Senasis React + Express kodas. **Neliečiam** – tik istorijai. |
+| `scripts/demo/` | GitHub Pages demo programa (naršyklėje, be serverio) |
+| `docs/` | Dokumentacija + surinktas Pages demo (`index.html`, `css/`, `js/`) |
 
 ## Komandos
 
@@ -25,6 +26,7 @@ deno task build    # produkcijos versija
 deno task start    # paleisti sukurtą versiją
 deno task seed     # pradiniai duomenys
 deno task generate # sugeneruoti patiekalus su Claude
+deno task demo     # surinkti GitHub Pages demo į docs/
 deno task test     # testai
 deno task check    # fmt + lint + tipai
 ```
@@ -45,7 +47,13 @@ deno task check    # fmt + lint + tipai
    matavimo įrankis neturi teisės sugadinti to, ką matuoja.
 6. **AI kviečiamas tik kai trūksta.** Sugeneruota – įrašoma į KV ir
    tarnauja visiems.
-7. **Lietuviškai.** Sąsaja, komentarai, commit'ai.
+7. **Lietuviškai.** Sąsaja, komentarai, commit'ai. Skaičius derinam su
+   žodžiu per `shared/plural.ts` („1 patiekalas“, „14 patiekalų“), kiekius –
+   per `shared/units.ts`.
+8. **Demo ir programa – ta pati logika.** Planas dėliojamas
+   `backend/services/arrange.ts`, pirkiniai – `shopping.ts`. Pakeitus juos
+   arba `frontend/static/*`, `frontend/assets/efektai.css` – paleisk
+   `deno task demo`, kad atsinaujintų `docs/`.
 
 ## Kada kviesti skill'ą ar agentą
 

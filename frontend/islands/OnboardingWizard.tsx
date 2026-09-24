@@ -2,6 +2,7 @@ import { useSignal } from "@preact/signals";
 import { Button } from "../components/ui.tsx";
 import { MEAL_SLOTS } from "@shared/types.ts";
 import type { Category, MealSlot } from "@shared/types.ts";
+import { plural, pluralWord, WORDS } from "@shared/plural.ts";
 
 /**
  * TRIJŲ ŽINGSNIŲ ANKETA.
@@ -136,7 +137,8 @@ export default function OnboardingWizard(
 
           <label class="mt-5 block">
             <span class="text-sm font-semibold text-ink">
-              Kiek minučių gali gaminti darbo dieną: {minutesPerDay.value}
+              Kiek minučių darbo dieną gali skirti gaminimui:{" "}
+              {minutesPerDay.value}
             </span>
             <input
               type="range"
@@ -179,10 +181,11 @@ export default function OnboardingWizard(
 
       {step.value === 2 && (
         <section>
-          <h2 class="font-display text-2xl font-bold text-ink">Ko nevalgot?</h2>
+          <h2 class="font-display text-2xl font-bold text-ink">
+            Ko nevalgote?
+          </h2>
           <p class="mt-1 text-sm text-ink-soft">
-            Išvardink kableliais. Galima palikti tuščią – tada nieko
-            neišbrauksim.
+            Išvardink kableliais. Gali palikti tuščią – tada nieko neišbrauksim.
           </p>
           <input
             type="text"
@@ -196,8 +199,14 @@ export default function OnboardingWizard(
             <strong>Ką gausi po šito mygtuko:</strong>
             <ul class="mt-2 list-inside list-disc space-y-1">
               <li>7 dienų planą kategorijai „{selected?.name}“</li>
-              <li>{slots.value.length * 7} patiekalus su receptais</li>
-              <li>pirkinių sąrašą {household.value} žmonėms</li>
+              <li>
+                {plural(slots.value.length * 7, WORDS.patiekalasGal)}{" "}
+                su receptais
+              </li>
+              <li>
+                pirkinių sąrašą {household.value}{" "}
+                {pluralWord(household.value, WORDS.zmoguiNaud)}
+              </li>
             </ul>
           </div>
         </section>

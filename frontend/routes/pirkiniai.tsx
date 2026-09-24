@@ -5,6 +5,8 @@ import { getActivePlan } from "@backend/db/repositories/plans.ts";
 import { getMeals } from "@backend/db/repositories/meals.ts";
 import { buildShoppingList } from "@backend/services/shopping.ts";
 import { track } from "@backend/services/analytics.ts";
+import { plural, pluralWord, WORDS } from "@shared/plural.ts";
+import { formatQuantity } from "@shared/units.ts";
 
 export default define.page(async function ShoppingPage(ctx) {
   const plan = await getActivePlan(ctx.state.user.id);
@@ -37,8 +39,9 @@ export default define.page(async function ShoppingPage(ctx) {
           Pirkinių sąrašas
         </h1>
         <p class="mt-1 text-sm text-ink-soft">
-          {totalLines} prekės · {household}{" "}
-          žmonėms · tik dar nepagamintiems patiekalams
+          {plural(totalLines, WORDS.preke)} · {household}{" "}
+          {pluralWord(household, WORDS.zmoguiNaud)}{" "}
+          · tik dar nepagamintiems patiekalams
         </p>
       </header>
 
@@ -57,26 +60,29 @@ export default define.page(async function ShoppingPage(ctx) {
           <div class="grid gap-4 sm:grid-cols-2">
             {sections.map((section) => (
               <Card key={section.aisle}>
-                <h2 class="font-display text-lg font-bold capitalize text-ink">
+                <h2 class="font-display text-lg font-bold text-ink first-letter:uppercase">
                   {section.aisle}
                 </h2>
                 <ul class="mt-3 space-y-2">
                   {section.lines.map((line) => (
-                    <li
-                      key={`${line.name}-${line.unit}`}
-                      class="flex items-start gap-2 text-sm"
-                    >
-                      {/* Varnelė be serverio: pirkdamas žmogus žymi sau. */}
-                      <input
-                        type="checkbox"
-                        class="mt-0.5 h-4 w-4 shrink-0 accent-[var(--color-fresh)]"
-                      />
-                      <span class="text-ink">
-                        {line.name}
-                        <span class="text-ink-soft">
-                          — {line.amount} {line.unit}
+                    <li key={`${line.name}-${line.unit}`}>
+                      {
+                        /* Varnelė be serverio: pirkdamas žmogus žymi sau.
+                          Būsena įsimenama naršyklėje (static/efektai.js). */
+                      }
+                      <label class="flex cursor-pointer items-start gap-2 text-sm">
+                        <input
+                          type="checkbox"
+                          data-isimink={`${plan.id}:${line.name}-${line.unit}`}
+                          class="mt-0.5 h-4 w-4 shrink-0 accent-[var(--color-fresh)]"
+                        />
+                        <span class="text-ink">
+                          {line.name}
+                          <span class="text-ink-soft">
+                            {` — ${formatQuantity(line.amount, line.unit)}`}
+                          </span>
                         </span>
-                      </span>
+                      </label>
                     </li>
                   ))}
                 </ul>
@@ -86,8 +92,8 @@ export default define.page(async function ShoppingPage(ctx) {
         )}
 
       <p class="mt-6 text-sm text-ink-soft">
-        Patarimas: atsidaryk šį puslapį telefone parduotuvėje. Varnelės laikosi,
-        kol neperkrauni.
+        Patarimas: atsidaryk šį puslapį telefone parduotuvėje. Varnelės
+        išsaugomos šiame telefone.
       </p>
     </Layout>
   );

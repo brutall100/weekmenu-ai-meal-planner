@@ -1,4 +1,5 @@
 import type { WeekProgress } from "@backend/services/engagement.ts";
+import { plural, WORDS } from "@shared/plural.ts";
 
 /**
  * Savaitės progreso juosta.
@@ -11,8 +12,10 @@ export function ProgressBar({ progress }: { progress: WeekProgress }) {
   const label = progress.total === 0
     ? "Planas dar nesudarytas"
     : progress.remaining === 0
-    ? "Visa savaitė pagaminta 🎉"
-    : `Liko ${progress.remaining} iš ${progress.total}`;
+    ? "Visi savaitės patiekalai pagaminti 🎉"
+    : `Liko ${progress.remaining} iš ${
+      plural(progress.total, WORDS.patiekalasKilm)
+    }`;
 
   return (
     <div>

@@ -1,85 +1,142 @@
 @import "tailwindcss";
+/* Gyvas fonas, mygtukų bangelė, atsiradimas slenkant – bendra su GitHub Pages demo. */
+@import "./efektai.css";
 
 /*
-  DIZAINO SISTEMA
-  ---------------
-  Visos spalvos, tarpai ir šriftai gyvena ČIA – vienoje vietoje.
-  Komponentuose niekada nerašom `#ff6b35`, rašom `bg-brand`.
-  Nori pakeisti visos svetainės nuotaiką? Pakeiti tris eilutes žemiau.
+  DIZAINO SISTEMA – „Spalvota lėkštė“
+  -----------------------------------
+  Visos spalvos, šriftai ir apvalinimai gyvena ČIA – vienoje vietoje.
+  Komponentuose niekada nerašom `#E4572E`, rašom `bg-brand`.
+  Nori pakeisti visos svetainės nuotaiką? Keiti reikšmes žemiau.
 
-  Spalvų logika:
-    brand  – šiltas paprikos oranžinis. Maistas turi atrodyti šiltas.
-    fresh  – žolelių žalia. Naudojam progresui ir „pavyko“ signalams.
-    ink    – tekstas. surface – fonas. line – rėmeliai.
+  Spalvų logika (šviesus režimas):
+    brand   #E4572E – pomidoras. Akcentai, švytėjimai, rėmeliai, riekelės.
+    action  #C9461D – tamsesnis pomidoras MYGTUKAMS. Originalus #E4572E su
+                      baltu tekstu duoda tik 3.7:1, o šis – 4.8:1 (WCAG AA).
+    plate   #3A6EA5 – lėkštės mėlyna. Antras akcentas, nuorodos, lėkštės kraštas.
+    butter  #F3C13A – sviesto geltona. Tik dekoracijai (fonas, riekelės).
+    fresh   #2A7238 – žolelių žalia. TIK „pavyko“: progresas, pažymėta.
+    ink     – tekstas. surface – fonas. line – rėmeliai.
+
+  Patikrinti kontrastai (šviesus / tamsus):
+    ink ant surface          14.4 / 15.7
+    ink-soft ant surface      6.5 /  8.9
+    brand-strong ant surface  5.4 /  8.6
+    on-action ant action      4.8 /  6.9
+    on-fresh ant fresh        5.9 /  8.5
+    brand (UI) ant surface    3.4 /  6.9   (rėmeliai, ikonos – reikia ≥ 3)
 */
 @theme {
-  --color-brand: oklch(0.63 0.17 40);
-  --color-brand-soft: oklch(0.95 0.04 55);
-  --color-brand-strong: oklch(0.52 0.16 38);
+  --color-brand: #e4572e;
+  --color-brand-soft: #fde3d6;
+  --color-brand-strong: #b83a14;
 
-  --color-fresh: oklch(0.62 0.14 150);
-  --color-fresh-soft: oklch(0.95 0.04 150);
+  --color-action: #c9461d;
+  --color-on-action: #ffffff;
 
-  --color-surface: oklch(0.99 0.008 80);
-  --color-surface-raised: oklch(1 0 0);
-  --color-line: oklch(0.9 0.012 70);
+  --color-plate: #35679c;
+  --color-plate-soft: #e3ecf7;
+  --color-butter: #f3c13a;
 
-  --color-ink: oklch(0.25 0.02 60);
-  --color-ink-soft: oklch(0.52 0.02 60);
+  --color-fresh: #2a7238;
+  --color-fresh-soft: #ddf0dc;
+  --color-on-fresh: #ffffff;
 
-  --font-display: "Georgia", "Times New Roman", serif;
+  --color-surface: #fff6e6;
+  --color-surface-raised: #ffffff;
+  --color-line: #eadbc2;
 
-  --radius-card: 1rem;
+  --color-ink: #1f2240;
+  --color-ink-soft: #545873;
+
+  --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --font-sans: "DM Sans", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "DM Mono", ui-monospace, monospace;
+
+  --radius-card: 1.75rem;
 }
 
 /*
-  Tamsi tema.
-  Įjungiam automatiškai pagal sistemos nustatymą, bet leidžiam
-  perrašyti ranka per data-theme – kad žmogus galėtų pasirinkti.
+  Gyvo fono stiprumas. Tamsiame režime švytėjimai ryškesni –
+  tamsoje šviesa matosi labiau, o tekstui tai netrukdo.
+*/
+:root {
+  --fonas-svytejimas: 0.45;
+  --fonas-riekeles: 0.5;
+  --seselis: 0 18px 40px -22px rgb(31 34 64 / 0.45);
+}
+
+/*
+  Tamsi tema – ne juoda su balta, o „mėlyna lėkštė naktį“.
+  Įjungiam automatiškai pagal sistemą, bet leidžiam perrašyti ranka
+  per data-theme (mygtukas viršuje). Kiekvienas žetonas – DVIEJOSE vietose.
 */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --color-surface: oklch(0.19 0.012 60);
-    --color-surface-raised: oklch(0.24 0.014 60);
-    --color-line: oklch(0.33 0.015 60);
-    --color-ink: oklch(0.95 0.01 80);
-    --color-ink-soft: oklch(0.73 0.015 70);
-    --color-brand-soft: oklch(0.31 0.05 45);
-    --color-fresh-soft: oklch(0.29 0.04 150);
+    --color-brand: #ff7a52;
+    --color-brand-soft: #3b2635;
+    --color-brand-strong: #ff9b7a;
+    --color-action: #ff7a52;
+    --color-on-action: #15172b;
+    --color-plate: #7fa7e0;
+    --color-plate-soft: #252b4f;
+    --color-butter: #f3c13a;
+    --color-fresh: #7bc47f;
+    --color-fresh-soft: #1f3a2e;
+    --color-on-fresh: #15172b;
+    --color-surface: #15172b;
+    --color-surface-raised: #20233f;
+    --color-line: #343862;
+    --color-ink: #f5f1e6;
+    --color-ink-soft: #b4b7ce;
+    --fonas-svytejimas: 0.6;
+    --fonas-riekeles: 0.7;
+    --seselis: 0 18px 40px -20px rgb(0 0 0 / 0.7);
   }
 }
 
 :root[data-theme="dark"] {
-  --color-surface: oklch(0.19 0.012 60);
-  --color-surface-raised: oklch(0.24 0.014 60);
-  --color-line: oklch(0.33 0.015 60);
-  --color-ink: oklch(0.95 0.01 80);
-  --color-ink-soft: oklch(0.73 0.015 70);
-  --color-brand-soft: oklch(0.31 0.05 45);
-  --color-fresh-soft: oklch(0.29 0.04 150);
+  --color-brand: #ff7a52;
+  --color-brand-soft: #3b2635;
+  --color-brand-strong: #ff9b7a;
+  --color-action: #ff7a52;
+  --color-on-action: #15172b;
+  --color-plate: #7fa7e0;
+  --color-plate-soft: #252b4f;
+  --color-butter: #f3c13a;
+  --color-fresh: #7bc47f;
+  --color-fresh-soft: #1f3a2e;
+  --color-on-fresh: #15172b;
+  --color-surface: #15172b;
+  --color-surface-raised: #20233f;
+  --color-line: #343862;
+  --color-ink: #f5f1e6;
+  --color-ink-soft: #b4b7ce;
+  --fonas-svytejimas: 0.6;
+  --fonas-riekeles: 0.7;
+  --seselis: 0 18px 40px -20px rgb(0 0 0 / 0.7);
+}
+
+:root {
+  color-scheme: light dark;
+}
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+html {
+  overflow-x: hidden;
 }
 
 body {
   background-color: var(--color-surface);
   color: var(--color-ink);
+  font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
-}
-
-/* Fokuso žiedas – matomas klaviatūra naršantiems. Niekada jo netrinam. */
-:focus-visible {
-  outline: 2px solid var(--color-brand);
-  outline-offset: 2px;
-  border-radius: 4px;
-}
-
-/* Gerbiam „mažiau judesio“ nustatymą. */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
-  }
+  overflow-x: hidden;
 }
 
 /* Serijos liepsnelė kvėpuoja – mažas, bet pastebimas gyvybės ženklas. */
@@ -93,5 +150,18 @@ body {
   }
 }
 .streak-flame {
+  display: inline-block;
   animation: streak-pulse 2.5s ease-in-out infinite;
+}
+
+/* Gerbiam „mažiau judesio“ (efektų taisyklės – efektai.css). */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

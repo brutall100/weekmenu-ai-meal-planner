@@ -47,6 +47,28 @@ Deno.test("patiekalai nesikartoja, kol yra iš ko rinktis", () => {
   assertEquals(new Set(ids).size, 7, "visi septyni turi būti skirtingi");
 });
 
+Deno.test("tą pačią dieną pietums ir vakarienei – skirtingi patiekalai", () => {
+  // Tik trys patiekalai 14-ai langelių: kartotis teks, bet ne tą pačią dieną.
+  const meals = Array.from({ length: 3 }, (_, i) => meal(`m${i}`));
+  const plan = composePlan({
+    userId: "u1",
+    profile: { ...profile, slots: ["pietūs", "vakarienė"] },
+    meals,
+  });
+  for (let day = 0; day < 7; day++) {
+    const ids = plan.entries.filter((e) => e.day === day).map((e) => e.mealId);
+    assertEquals(new Set(ids).size, ids.length, `diena ${day}`);
+  }
+  // Ir pasikartojimai paskirstyti tolygiai: 14 langelių / 3 patiekalai ≤ 5.
+  const counts = new Map<string, number>();
+  for (const e of plan.entries) {
+    counts.set(e.mealId, (counts.get(e.mealId) ?? 0) + 1);
+  }
+  for (const n of counts.values()) {
+    assertEquals(n <= 5, true, "nė vienas neturi kartotis per dažnai");
+  }
+});
+
 Deno.test("darbo dieną nesiūlom ilgesnio recepto nei turimas laikas", () => {
   const meals = [
     ...Array.from(

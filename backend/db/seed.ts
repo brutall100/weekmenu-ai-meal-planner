@@ -2,7 +2,6 @@ import { getKv } from "./kv.ts";
 import { keys } from "./keys.ts";
 import { listCategories, saveCategory } from "./repositories/categories.ts";
 import { countMealsByCategory, saveMeals } from "./repositories/meals.ts";
-import { addStory, listStories } from "./repositories/stories.ts";
 import { newId } from "../lib/id.ts";
 import { SEED_CATEGORIES } from "@shared/categories.ts";
 import type { Category, Meal } from "@shared/types.ts";
@@ -18,7 +17,7 @@ type SeedMeal = Omit<Meal, "id" | "createdAt" | "categoryIds"> & {
   categories: string[];
 };
 
-const SEED_MEALS: SeedMeal[] = [
+export const SEED_MEALS: SeedMeal[] = [
   {
     name: "Grikių dubuo su vištiena ir brokoliais",
     description:
@@ -533,26 +532,12 @@ const SEED_MEALS: SeedMeal[] = [
   },
 ];
 
-const SEED_STORIES = [
-  {
-    title: "Pagaliau nustojau kas vakarą klausti „ką valgom?“",
-    content:
-      "Anksčiau 18 val. stovėdavau prie atidaryto šaldytuvo ir galvodavau. Dabar penktadienį susigeneruoju planą, šeštadienį nuperku pagal sąrašą ir savaitė tiesiog vyksta. Per mėnesį sutaupiau bene 80 eurų vien dėl to, kad nebeperku atsitiktinai.",
-    author: "Rūta, 34",
-  },
-  {
-    title: "Serija – 21 diena. Nemaniau, kad mane tai veiks",
-    content:
-      "Skaičiukas su liepsnele atrodė kvailai, kol nepasiekiau septynių. Dabar vakare, net pavargęs, pagaminu bent ką nors paprasto, kad nenutrūktų. Netikėtai tai virto įpročiu.",
-    author: "Mindaugas, 41",
-  },
-  {
-    title: "Vaikai patys žiūri, kas šiandien plane",
-    content:
-      "Atspausdinau savaitės planą ir pakabinau ant šaldytuvo. Dukra ryte pirmiausia nubėga pažiūrėti, kas vakarienei. Ginčų prie stalo sumažėjo per pusę.",
-    author: "Giedrė, 38",
-  },
-];
+/*
+  Istorijų sėklos nėra – sąmoningai.
+  Anksčiau čia buvo sugalvoti atsiliepimai su vardais („Rūta, 34“).
+  Tai suklastotas socialinis įrodymas, o jis mūsų etinėje riboje
+  uždraustas (žr. CLAUDE.md). Istorijas rašo tik tikri žmonės.
+*/
 
 /**
  * Pasėja pradinius duomenis. Saugu paleisti daug kartų –
@@ -561,12 +546,11 @@ const SEED_STORIES = [
 export async function seed(options: { force?: boolean } = {}): Promise<{
   categories: number;
   meals: number;
-  stories: number;
 }> {
   const kv = await getKv();
   const already = await kv.get<boolean>(keys.seeded());
   if (already.value && !options.force) {
-    return { categories: 0, meals: 0, stories: 0 };
+    return { categories: 0, meals: 0 };
   }
 
   // 1. Kategorijos
@@ -602,20 +586,9 @@ export async function seed(options: { force?: boolean } = {}): Promise<{
   const mealsAdded = alreadyHasMeals ? 0 : meals.length;
   if (!alreadyHasMeals) await saveMeals(meals);
 
-  // 3. Istorijos
-  const storiesNow = await listStories(1);
-  let storiesAdded = 0;
-  if (storiesNow.length === 0) {
-    for (const story of SEED_STORIES) {
-      await addStory(story);
-      storiesAdded++;
-    }
-  }
-
   await kv.set(keys.seeded(), true);
   return {
     categories: categoriesAdded,
     meals: mealsAdded,
-    stories: storiesAdded,
   };
 }
