@@ -5,7 +5,8 @@
 Atsakyk į tris klausimus ir gauk visos savaitės meniu su receptais ir
 paruoštu pirkinių sąrašu, pritaikytą dešimčiai mitybos grupių.
 
-**[▶ Gyvas demo](https://brutall100.github.io/weekmenu-ai-meal-planner/)** ·
+**[▶ Gyvas demo](https://brutall100.github.io/weekmenu-ai-meal-planner/)** (naršyklėje) ·
+**[Pilna versija su AI](https://weekmenu.brutall100.deno.net)** (Deno Deploy) ·
 **[Kodas](https://github.com/brutall100/weekmenu-ai-meal-planner)**
 
 ![WeekMenu – šviesus režimas](docs/screenshot.webp)
@@ -50,7 +51,7 @@ taisyklės (jokių tamsių raštų, jokių netikrų atsiliepimų).
 
 | | GitHub Pages demo | Pilna programa |
 |---|---|---|
-| Kur | `docs/` – statiniai failai | Deno + Fresh serveris |
+| Kur | `docs/` – statiniai failai | Deno + Fresh serveris, veikia [weekmenu.brutall100.deno.net](https://weekmenu.brutall100.deno.net) |
 | Duomenys | 14 pavyzdinių patiekalų, laikomi naršyklėje (`localStorage`) | Deno KV duomenų bazė |
 | AI | – | Claude kuria trūkstamus receptus |
 | Serijos, istorijos, statistika | – | ✓ |
